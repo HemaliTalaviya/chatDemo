@@ -52,8 +52,8 @@ const sendMsg = async (data,socket) => {
 
         } else {
             let ChatData = await chatController.chat(chatObj, socket.id);
+            // console.log('chat Data send msg==',ChatData)
             if (!ChatData) {
-
                 data = {
                     eventName:EVENT_NAME.SEND_MSG,
                     data:{
@@ -62,15 +62,12 @@ const sendMsg = async (data,socket) => {
                 }
                 return sendToSocketEmitter(socket.id,data)
             }
-
-            let sendMsg = await chatController.chat(chatObj, socket.id);
-                // console.log('send msg data log ::::::::::',sendMsg)
-                let chatData = sendMsg.ChatData
+            let chatData = ChatData.ChatData
                 data = {
                     eventName:EVENT_NAME.SEND_MSG,
                     data:{chatData}
                 }
-                return sendToSocketEmitter(sendMsg.msgSocketId,data)
+                return sendToSocketEmitter(ChatData.msgSocketId,data)
         }
     } catch (error) {
         console.log('send message event Error:',error.message)
